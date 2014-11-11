@@ -4,6 +4,7 @@ var parseArgs = require('minimist');
 var console = require('console');
 var dgram = require('dgram');
 var Buffer = require('buffer').Buffer;
+require('heapdump');
 
 var argv = parseArgs(process.argv.slice(2));
 var UDP_HOST = process.env.DNS_NODEJS_TEST_HOST;
@@ -26,7 +27,12 @@ function testWithStatsd() {
 
     setTimeout(function loop() {
         for (var i = 0; i < LOOP_COUNT; i++) {
-            console.log('Write value.\n');
+            var s = cli._ephemeralSocket;
+            var socket = s && s._socket;
+            var queue = socket && socket._sendQueue;
+            var length = queue ? queue.length : 0
+
+            console.log('Write (statsd) value', length);
             cli.increment('systemname.subsystem.value');
         }
 
@@ -62,6 +68,7 @@ if (argv.statsd) {
 
 process.on('uncaughtException', function () {
     // we log & continue in production.
+    console.log('wat?');
 
     // much sad.
 });

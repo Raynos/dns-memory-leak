@@ -4,7 +4,7 @@
   "description": "",
   "main": "test.js",
   "scripts": {
-    "tcpdump": "npm run clean --silent && udo tcpdump -vvv -s 0 -w lol.pcap -l -i any -n ip host $DNS_NODEJS_TEST_IP or port 53",
+    "tcpdump": "npm run clean --silent && sudo tcpdump -vvv -s 0 -w lol.pcap -l -i any -n ip host $DNS_NODEJS_TEST_IP or port 53",
     "strace": "strace -s9999 -o strace.out node test.js",
     "strace-stats": "strace -s9999 -o strace.out node test.js --statsd",
     "echo-server": "ncat -u -l 41234 --keep-open --udp --exec \"/bin/cat\"",
@@ -20,6 +20,7 @@
     "statsd-client": "0.0.4"
   },
   "dependencies": {
+    "heapdump": "^0.3.0",
     "minimist": "^0.2.0",
     "process": "^0.7.0",
     "statsd-client": "0.0.4"
